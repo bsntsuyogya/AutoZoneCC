@@ -1,20 +1,30 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { SafeAreaView, StatusBar, useColorScheme } from "react-native";
+import { Colors } from "react-native/Libraries/NewAppScreen";
+import RootNavigation from "./src/navigation/RootNavigation";
+import Header from "./src/screens/components/Header";
+import { Provider } from "react-redux";
+import store from "./src/redux/store";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+const App = () => {
+  const isDarkMode = useColorScheme() === "dark";
 
-const styles = StyleSheet.create({
-  container: {
+  const backgroundStyle = {
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  };
+
+  return (
+    <Provider store={store}>
+      <SafeAreaView style={backgroundStyle}>
+        <StatusBar
+          barStyle={isDarkMode ? "light-content" : "dark-content"}
+          backgroundColor={backgroundStyle.backgroundColor}
+        />
+        <RootNavigation />
+      </SafeAreaView>
+    </Provider>
+  );
+};
+
+export default App;
